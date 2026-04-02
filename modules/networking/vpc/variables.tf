@@ -99,7 +99,7 @@ variable "create_igw" {
 variable "enable_flow_log" {
   description = "Enable VPC flow logs"
   type        = bool
-  default     = false
+  default     = true
 }
 
 variable "flow_log_destination_type" {
@@ -135,7 +135,7 @@ variable "flow_log_iam_role_arn" {
 variable "create_flow_log_cloudwatch_log_group" {
   description = "Create a CloudWatch log group for VPC flow logs"
   type        = bool
-  default     = false
+  default     = true
 }
 
 variable "flow_log_cloudwatch_log_group_retention" {

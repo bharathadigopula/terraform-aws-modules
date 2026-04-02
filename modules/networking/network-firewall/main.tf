@@ -18,6 +18,14 @@ resource "aws_networkfirewall_firewall" "this" {
     }
   }
 
+  dynamic "encryption_configuration" {
+    for_each = var.kms_key_arn != null ? [1] : []
+    content {
+      key_id = var.kms_key_arn
+      type   = "CUSTOMER_KMS"
+    }
+  }
+
   tags = merge(
     var.tags,
     { Name = var.name }
@@ -31,6 +39,14 @@ resource "aws_networkfirewall_firewall" "this" {
 resource "aws_networkfirewall_firewall_policy" "this" {
   name        = var.policy_name != "" ? var.policy_name : "${var.name}-policy"
   description = var.policy_description
+
+  dynamic "encryption_configuration" {
+    for_each = var.kms_key_arn != null ? [1] : []
+    content {
+      key_id = var.kms_key_arn
+      type   = "CUSTOMER_KMS"
+    }
+  }
 
   firewall_policy {
     stateless_default_actions          = var.stateless_default_actions
@@ -88,6 +104,14 @@ resource "aws_networkfirewall_rule_group" "stateful" {
   description = "Stateful rule group: ${each.value.name}"
 
   rules = each.value.rules_string
+
+  dynamic "encryption_configuration" {
+    for_each = var.kms_key_arn != null ? [1] : []
+    content {
+      key_id = var.kms_key_arn
+      type   = "CUSTOMER_KMS"
+    }
+  }
 
   tags = merge(
     var.tags,
@@ -155,6 +179,14 @@ resource "aws_networkfirewall_rule_group" "stateless" {
           }
         }
       }
+    }
+  }
+
+  dynamic "encryption_configuration" {
+    for_each = var.kms_key_arn != null ? [1] : []
+    content {
+      key_id = var.kms_key_arn
+      type   = "CUSTOMER_KMS"
     }
   }
 

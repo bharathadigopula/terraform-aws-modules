@@ -14,8 +14,8 @@ variable "vpc_id" {
 
 variable "description" {
   type        = string
-  default     = "Managed by Terraform"
-  description = "Description for the security group"
+  default     = "Security group managed via terraform-aws-modules"
+  description = "Description for the security group. Avoid using the default Terraform description."
 }
 
 #==============================================================================

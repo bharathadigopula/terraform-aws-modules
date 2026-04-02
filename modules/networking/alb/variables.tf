@@ -25,7 +25,7 @@ variable "security_groups" {
 
 variable "internal" {
   type        = bool
-  default     = false
+  default     = true
   description = "Whether the ALB is internal or internet-facing"
 }
 
@@ -51,6 +51,12 @@ variable "enable_cross_zone_load_balancing" {
   type        = bool
   default     = true
   description = "Enable cross-zone load balancing"
+}
+
+variable "drop_invalid_header_fields" {
+  type        = bool
+  default     = true
+  description = "Drop invalid HTTP header fields on the ALB"
 }
 
 #==============================================================================
@@ -93,7 +99,7 @@ variable "listeners" {
     })
   }))
   default     = []
-  description = "List of listener configurations for the ALB"
+  description = "List of listener configurations for the ALB. The recommended ssl_policy for HTTPS listeners is ELBSecurityPolicy-TLS13-1-2-2021-06 (set as default)."
 }
 
 #==============================================================================

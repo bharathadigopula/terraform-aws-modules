@@ -107,12 +107,8 @@ resource "aws_lambda_function" "this" {
     }
   }
 
-  dynamic "tracing_config" {
-    for_each = var.tracing_config_mode != null ? [var.tracing_config_mode] : []
-
-    content {
-      mode = tracing_config.value
-    }
+  tracing_config {
+    mode = var.tracing_config_mode
   }
 
   dynamic "image_config" {

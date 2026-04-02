@@ -13,6 +13,7 @@ resource "aws_lb" "this" {
   enable_deletion_protection       = var.enable_deletion_protection
   enable_http2                     = var.enable_http2
   enable_cross_zone_load_balancing = var.enable_cross_zone_load_balancing
+  drop_invalid_header_fields       = var.drop_invalid_header_fields
 
   dynamic "access_logs" {
     for_each = var.access_logs != null ? [var.access_logs] : []

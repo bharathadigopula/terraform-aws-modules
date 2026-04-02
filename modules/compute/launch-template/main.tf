@@ -100,14 +100,11 @@ resource "aws_launch_template" "this" {
   # METADATA OPTIONS
   #==============================================================================
 
-  dynamic "metadata_options" {
-    for_each = var.metadata_options != null ? [var.metadata_options] : []
-    content {
-      http_endpoint               = metadata_options.value.http_endpoint
-      http_tokens                 = metadata_options.value.http_tokens
-      http_put_response_hop_limit = metadata_options.value.http_put_response_hop_limit
-      instance_metadata_tags      = metadata_options.value.instance_metadata_tags
-    }
+  metadata_options {
+    http_endpoint               = var.metadata_options.http_endpoint
+    http_tokens                 = var.metadata_options.http_tokens
+    http_put_response_hop_limit = var.metadata_options.http_put_response_hop_limit
+    instance_metadata_tags      = var.metadata_options.instance_metadata_tags
   }
 
   #==============================================================================

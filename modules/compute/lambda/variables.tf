@@ -185,7 +185,7 @@ variable "dead_letter_config" {
 
 variable "tracing_config_mode" {
   type        = string
-  default     = null
+  default     = "Active"
   description = "X-Ray tracing mode: PassThrough or Active"
 }
 

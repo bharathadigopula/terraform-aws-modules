@@ -167,13 +167,13 @@ variable "credit_specification" {
 
 variable "metadata_options" {
   type = object({
-    http_endpoint               = optional(string)
-    http_tokens                 = optional(string)
-    http_put_response_hop_limit = optional(number)
-    instance_metadata_tags      = optional(string)
+    http_endpoint               = optional(string, "enabled")
+    http_tokens                 = optional(string, "required")
+    http_put_response_hop_limit = optional(number, 1)
+    instance_metadata_tags      = optional(string, "disabled")
   })
   description = "Instance metadata service configuration"
-  default     = null
+  default     = {}
 }
 
 #==============================================================================

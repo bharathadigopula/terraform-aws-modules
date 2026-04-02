@@ -184,7 +184,7 @@ resource "aws_cloudfront_distribution" "this" {
   viewer_certificate {
     acm_certificate_arn            = var.viewer_certificate.acm_certificate_arn
     ssl_support_method             = var.viewer_certificate.acm_certificate_arn != null ? var.viewer_certificate.ssl_support_method : null
-    minimum_protocol_version       = var.viewer_certificate.acm_certificate_arn != null ? var.viewer_certificate.minimum_protocol_version : "TLSv1"
+    minimum_protocol_version       = var.viewer_certificate.minimum_protocol_version
     cloudfront_default_certificate = var.viewer_certificate.acm_certificate_arn == null ? true : var.viewer_certificate.cloudfront_default_certificate
   }
 

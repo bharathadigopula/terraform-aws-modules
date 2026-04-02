@@ -31,7 +31,7 @@ variable "ip_addresses" {
 
 variable "flow_logs_enabled" {
   type        = bool
-  default     = false
+  default     = true
   description = "Whether flow logs are enabled for the accelerator"
 }
 

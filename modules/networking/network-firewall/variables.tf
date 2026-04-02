@@ -28,7 +28,7 @@ variable "subnet_mapping" {
 variable "delete_protection" {
   description = "Protect the firewall from deletion"
   type        = bool
-  default     = false
+  default     = true
 }
 
 variable "firewall_policy_change_protection" {
@@ -136,6 +136,16 @@ variable "logging_configuration" {
     log_destination      = map(string)
   }))
   default = []
+}
+
+#==============================================================================
+# ENCRYPTION VARIABLES
+#==============================================================================
+
+variable "kms_key_arn" {
+  description = "KMS key ARN for encrypting the firewall, policy, and rule groups"
+  type        = string
+  default     = null
 }
 
 #==============================================================================

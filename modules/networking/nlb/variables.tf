@@ -10,7 +10,7 @@ variable "name" {
 variable "internal" {
   description = "Whether the NLB is internal or internet-facing"
   type        = bool
-  default     = false
+  default     = true
 }
 
 variable "subnets" {
@@ -28,7 +28,7 @@ variable "enable_deletion_protection" {
 variable "enable_cross_zone_load_balancing" {
   description = "Enable cross-zone load balancing"
   type        = bool
-  default     = false
+  default     = true
 }
 
 #==============================================================================
@@ -90,12 +90,12 @@ variable "target_groups" {
 #==============================================================================
 
 variable "listeners" {
-  description = "List of listener configurations"
+  description = "List of listener configurations. The recommended ssl_policy for TLS listeners is ELBSecurityPolicy-TLS13-1-2-2021-06 (set as default)."
   type = list(object({
     port            = number
     protocol        = string
     default_action  = optional(string, "forward")
-    ssl_policy      = optional(string, null)
+    ssl_policy      = optional(string, "ELBSecurityPolicy-TLS13-1-2-2021-06")
     certificate_arn = optional(string, null)
   }))
   default = []

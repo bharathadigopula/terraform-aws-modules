@@ -3,7 +3,7 @@
 #==============================================================================
 
 resource "aws_batch_compute_environment" "this" {
-  compute_environment_name = var.name
+  name = var.name
   type                     = var.compute_environment_type
   state                    = var.state
   service_role             = var.service_role
