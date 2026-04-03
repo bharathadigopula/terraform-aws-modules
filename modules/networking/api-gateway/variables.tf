@@ -142,6 +142,16 @@ variable "body" {
   default = null
 }
 
+variable "xray_tracing_enabled" {
+  type    = bool
+  default = true
+}
+
+variable "cache_enabled" {
+  type    = bool
+  default = false
+}
+
 variable "api_key_source" {
   type    = string
   default = "HEADER"

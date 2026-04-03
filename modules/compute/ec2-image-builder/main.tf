@@ -6,7 +6,7 @@ resource "aws_imagebuilder_image_recipe" "this" {
   name         = var.name
   description  = var.description
   parent_image = var.parent_image
-  version      = var.version
+  version      = var.recipe_version
 
   dynamic "component" {
     for_each = var.components

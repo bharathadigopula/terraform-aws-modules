@@ -141,7 +141,7 @@ variable "create_flow_log_cloudwatch_log_group" {
 variable "flow_log_cloudwatch_log_group_retention" {
   description = "Number of days to retain flow log events in CloudWatch"
   type        = number
-  default     = 30
+  default     = 365
 }
 
 variable "flow_log_cloudwatch_log_group_kms_key_id" {

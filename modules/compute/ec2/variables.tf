@@ -102,13 +102,13 @@ variable "user_data_base64" {
 variable "monitoring" {
   type        = bool
   description = "Enable detailed CloudWatch monitoring"
-  default     = false
+  default     = true
 }
 
 variable "ebs_optimized" {
   type        = bool
   description = "Enable EBS optimization"
-  default     = false
+  default     = true
 }
 
 variable "cpu_credits" {

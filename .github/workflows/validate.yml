@@ -53,5 +53,5 @@ jobs:
         run: |
           for dir in modules/*/*/; do
             echo "Linting ${dir}..."
-            tflint --config "$(pwd)/.tflint.hcl" "${dir}"
+            tflint --chdir="${dir}" --config "$(pwd)/.tflint.hcl"
           done

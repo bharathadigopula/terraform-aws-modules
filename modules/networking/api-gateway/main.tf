@@ -147,6 +147,10 @@ resource "aws_api_gateway_rest_api" "this" {
     vpc_endpoint_ids = length(var.endpoint_configuration.vpc_endpoint_ids) > 0 ? var.endpoint_configuration.vpc_endpoint_ids : null
   }
 
+  lifecycle {
+    create_before_destroy = true
+  }
+
   tags = var.tags
 }
 
@@ -182,6 +186,8 @@ resource "aws_api_gateway_stage" "this" {
   deployment_id = aws_api_gateway_deployment.this[0].id
   stage_name    = var.stage_name
 
+  xray_tracing_enabled = var.xray_tracing_enabled
+
   dynamic "access_log_settings" {
     for_each = var.access_log_settings != null ? [var.access_log_settings] : []
 
@@ -207,5 +213,6 @@ resource "aws_api_gateway_method_settings" "this" {
     logging_level          = "INFO"
     metrics_enabled        = true
     data_trace_enabled     = false
+    caching_enabled        = var.cache_enabled
   }
 }

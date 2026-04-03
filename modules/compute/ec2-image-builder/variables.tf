@@ -28,7 +28,7 @@ variable "parent_image" {
   description = "ARN or AMI ID of the base image"
 }
 
-variable "version" {
+variable "recipe_version" {
   type        = string
   description = "Semantic version of the image recipe"
 }

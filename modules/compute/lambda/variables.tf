@@ -191,7 +191,7 @@ variable "tracing_config_mode" {
 
 variable "log_retention_days" {
   type        = number
-  default     = 14
+  default     = 365
   description = "Number of days to retain CloudWatch log events"
 }
 

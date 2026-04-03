@@ -67,6 +67,26 @@ locals {
       name      = "EnvironmentType"
       value     = var.max_size > 1 ? "LoadBalanced" : "SingleInstance"
     },
+    {
+      namespace = "aws:elasticbeanstalk:managedactions"
+      name      = "ManagedActionsEnabled"
+      value     = "true"
+    },
+    {
+      namespace = "aws:elasticbeanstalk:managedactions:platformupdate"
+      name      = "UpdateLevel"
+      value     = "minor"
+    },
+    {
+      namespace = "aws:elasticbeanstalk:managedactions"
+      name      = "PreferredStartTime"
+      value     = "Sun:02:00"
+    },
+    {
+      namespace = "aws:elasticbeanstalk:healthreporting:system"
+      name      = "SystemType"
+      value     = "enhanced"
+    },
   ]
 
   all_settings = concat(local.default_settings, local.env_var_settings, var.settings)
