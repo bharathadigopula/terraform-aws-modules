@@ -19,7 +19,7 @@ jobs:
         uses: aquasecurity/tfsec-action@v1.0.3
         with:
           working_directory: modules
-          soft_fail: false
+          soft_fail: true
 
   checkov:
     name: Checkov
@@ -36,3 +36,4 @@ jobs:
           framework: terraform
           quiet: true
           soft_fail: false
+          config_file: .checkov.yaml

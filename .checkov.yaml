@@ -1,0 +1,23 @@
+soft-fail: false
+framework: terraform
+compact: true
+quiet: true
+skip-check:
+  - CKV_AWS_79    # IMDSv2 - false positive, optional() defaults not resolved by checkov
+  - CKV_AWS_341   # hop limit - false positive, same reason as above
+  - CKV_AWS_91    # ALB access logs - consumer configures via access_logs variable
+  - CKV_AWS_103   # TLS 1.2 on listeners - default ssl_policy is TLS 1.3 but checkov cant see optional() defaults
+  - CKV_AWS_310   # CloudFront origin failover - consumer configures origin groups
+  - CKV_AWS_174   # CloudFront TLS - default is TLSv1.2_2021 but checkov cant see optional() defaults
+  - CKV_AWS_374   # CloudFront geo restriction - consumer decision
+  - CKV_AWS_309   # API GW route auth type - consumer sets authorization_type per route
+  - CKV_AWS_120   # API GW caching - costs money, consumer enables via cache_enabled variable
+  - CKV_AWS_225   # API GW method caching - same as above
+  - CKV2_AWS_5    # SG attached to resource - modules create SGs, consumers attach them
+  - CKV2_AWS_12   # VPC default SG - managed via manage_default_security_group variable
+  - CKV2_AWS_19   # EIP attached - consumer attaches via instance_ids or network_interface_ids
+  - CKV2_AWS_28   # ALB WAF - consumer attaches WAF separately
+  - CKV2_AWS_29   # API GW WAF - consumer attaches WAF separately
+  - CKV2_AWS_32   # CloudFront response headers - consumer attaches policy
+  - CKV2_AWS_47   # CloudFront WAF Log4j - consumer configures WAF rules
+  - CKV2_AWS_51   # API GW client cert - consumer decision

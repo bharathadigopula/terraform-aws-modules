@@ -9,18 +9,8 @@ variable "name" {
 
 variable "description" {
   type        = string
-  description = "Description for the image recipe"
-  default     = ""
-}
-
-variable "platform" {
-  type        = string
-  description = "Platform of the image recipe"
-
-  validation {
-    condition     = contains(["Linux", "Windows"], var.platform)
-    error_message = "Platform must be either Linux or Windows."
-  }
+  description = "Description for the image recipe and related resources"
+  default     = "Managed by terraform-aws-modules"
 }
 
 variable "parent_image" {
