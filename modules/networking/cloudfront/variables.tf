@@ -3,43 +3,51 @@
 #==============================================================================
 
 variable "enabled" {
-  type    = bool
-  default = true
+  description = "Whether the CloudFront distribution is enabled"
+  type        = bool
+  default     = true
 }
 
 variable "comment" {
-  type    = string
-  default = ""
+  description = "Comment for the CloudFront distribution"
+  type        = string
+  default     = ""
 }
 
 variable "default_root_object" {
-  type    = string
-  default = null
+  description = "Object returned when the root URL is requested (e.g. index.html)"
+  type        = string
+  default     = null
 }
 
 variable "price_class" {
-  type    = string
-  default = "PriceClass_100"
+  description = "Price class for the distribution (PriceClass_100, PriceClass_200, PriceClass_All)"
+  type        = string
+  default     = "PriceClass_100"
 }
 
 variable "aliases" {
-  type    = list(string)
-  default = []
+  description = "Alternate domain names (CNAMEs) for the distribution"
+  type        = list(string)
+  default     = []
 }
 
 variable "web_acl_id" {
-  type    = string
-  default = null
+  description = "AWS WAF Web ACL ARN to associate with the distribution"
+  type        = string
+  default     = null
 }
 
 variable "is_ipv6_enabled" {
-  type    = bool
-  default = true
+  description = "Whether IPv6 is enabled for the distribution"
+  type        = bool
+  default     = true
 }
 
 variable "http_version" {
-  type    = string
-  default = "http2and3"
+  description = "Maximum HTTP version supported by the distribution"
+  type        = string
+  default     = "http2and3"
 }
 
 #==============================================================================
@@ -47,6 +55,7 @@ variable "http_version" {
 #==============================================================================
 
 variable "origins" {
+  description = "List of origin configurations for the distribution"
   type = list(object({
     domain_name              = string
     origin_id                = string
@@ -81,6 +90,7 @@ variable "origins" {
 #==============================================================================
 
 variable "default_cache_behavior" {
+  description = "Default cache behavior settings for the distribution"
   type = object({
     allowed_methods            = optional(list(string), ["GET", "HEAD"])
     cached_methods             = optional(list(string), ["GET", "HEAD"])
@@ -118,6 +128,7 @@ variable "default_cache_behavior" {
 #==============================================================================
 
 variable "ordered_cache_behaviors" {
+  description = "Ordered list of cache behaviors matched by path pattern"
   type = list(object({
     path_pattern               = string
     allowed_methods            = optional(list(string), ["GET", "HEAD"])
@@ -157,6 +168,7 @@ variable "ordered_cache_behaviors" {
 #==============================================================================
 
 variable "viewer_certificate" {
+  description = "SSL/TLS certificate configuration for the distribution"
   type = object({
     acm_certificate_arn            = optional(string, null)
     ssl_support_method             = optional(string, "sni-only")
@@ -173,6 +185,7 @@ variable "viewer_certificate" {
 #==============================================================================
 
 variable "restrictions" {
+  description = "Geographic restriction configuration for the distribution"
   type = object({
     geo_restriction = object({
       restriction_type = optional(string, "none")
@@ -192,6 +205,7 @@ variable "restrictions" {
 #==============================================================================
 
 variable "logging_config" {
+  description = "Access logging configuration for the distribution"
   type = object({
     bucket          = string
     prefix          = optional(string, "")
@@ -205,6 +219,7 @@ variable "logging_config" {
 #==============================================================================
 
 variable "custom_error_responses" {
+  description = "Custom error response configurations for specific HTTP error codes"
   type = list(object({
     error_code            = number
     response_code         = optional(number, null)
@@ -219,6 +234,7 @@ variable "custom_error_responses" {
 #==============================================================================
 
 variable "origin_access_controls" {
+  description = "List of origin access control configurations for S3 or other origins"
   type = list(object({
     name                              = string
     description                       = optional(string, "")
@@ -234,6 +250,7 @@ variable "origin_access_controls" {
 #==============================================================================
 
 variable "tags" {
-  type    = map(string)
-  default = {}
+  description = "Tags to apply to the CloudFront distribution"
+  type        = map(string)
+  default     = {}
 }

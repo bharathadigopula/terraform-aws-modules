@@ -8,13 +8,15 @@ variable "name" {
 }
 
 variable "description" {
-  type    = string
-  default = ""
+  description = "Description of the API Gateway"
+  type        = string
+  default     = ""
 }
 
 variable "api_type" {
-  type    = string
-  default = "http"
+  description = "Type of API Gateway to create (rest or http)"
+  type        = string
+  default     = "http"
 
   validation {
     condition     = contains(["rest", "http"], var.api_type)
@@ -23,8 +25,9 @@ variable "api_type" {
 }
 
 variable "protocol_type" {
-  type    = string
-  default = "HTTP"
+  description = "Protocol type for the API (HTTP or WEBSOCKET)"
+  type        = string
+  default     = "HTTP"
 
   validation {
     condition     = contains(["HTTP", "WEBSOCKET"], var.protocol_type)
@@ -33,8 +36,9 @@ variable "protocol_type" {
 }
 
 variable "tags" {
-  type    = map(string)
-  default = {}
+  description = "Tags to apply to all resources"
+  type        = map(string)
+  default     = {}
 }
 
 #==============================================================================
@@ -42,13 +46,15 @@ variable "tags" {
 #==============================================================================
 
 variable "stage_name" {
-  type    = string
-  default = "$default"
+  description = "Name of the API Gateway stage"
+  type        = string
+  default     = "$default"
 }
 
 variable "stage_auto_deploy" {
-  type    = bool
-  default = true
+  description = "Whether updates to the API are automatically deployed to the stage"
+  type        = bool
+  default     = true
 }
 
 #==============================================================================
@@ -56,6 +62,7 @@ variable "stage_auto_deploy" {
 #==============================================================================
 
 variable "cors_configuration" {
+  description = "CORS configuration for the V2 API"
   type = object({
     allow_origins     = optional(list(string), [])
     allow_methods     = optional(list(string), [])
@@ -72,6 +79,7 @@ variable "cors_configuration" {
 #==============================================================================
 
 variable "routes" {
+  description = "Map of route keys to integration configurations for V2 APIs"
   type = map(object({
     integration_uri    = string
     integration_type   = optional(string, "AWS_PROXY")
@@ -88,13 +96,15 @@ variable "routes" {
 #==============================================================================
 
 variable "domain_name" {
-  type    = string
-  default = null
+  description = "Custom domain name for the API Gateway"
+  type        = string
+  default     = null
 }
 
 variable "domain_name_certificate_arn" {
-  type    = string
-  default = null
+  description = "ARN of the ACM certificate for the custom domain"
+  type        = string
+  default     = null
 }
 
 #==============================================================================
@@ -102,13 +112,15 @@ variable "domain_name_certificate_arn" {
 #==============================================================================
 
 variable "throttling_burst_limit" {
-  type    = number
-  default = 5000
+  description = "Maximum number of concurrent requests for throttling"
+  type        = number
+  default     = 5000
 }
 
 variable "throttling_rate_limit" {
-  type    = number
-  default = 10000
+  description = "Maximum steady-state requests per second for throttling"
+  type        = number
+  default     = 10000
 }
 
 #==============================================================================
@@ -116,6 +128,7 @@ variable "throttling_rate_limit" {
 #==============================================================================
 
 variable "access_log_settings" {
+  description = "Access log destination and format configuration"
   type = object({
     destination_arn = string
     format          = optional(string, null)
@@ -128,6 +141,7 @@ variable "access_log_settings" {
 #==============================================================================
 
 variable "endpoint_configuration" {
+  description = "Endpoint type and VPC endpoint configuration for REST APIs"
   type = object({
     types            = list(string)
     vpc_endpoint_ids = optional(list(string), [])
@@ -138,23 +152,27 @@ variable "endpoint_configuration" {
 }
 
 variable "body" {
-  type    = string
-  default = null
+  description = "OpenAPI specification body for the REST API"
+  type        = string
+  default     = null
 }
 
 variable "xray_tracing_enabled" {
-  type    = bool
-  default = true
+  description = "Whether X-Ray tracing is enabled for the REST API"
+  type        = bool
+  default     = true
 }
 
 variable "cache_enabled" {
-  type    = bool
-  default = false
+  description = "Whether caching is enabled for the REST API stage"
+  type        = bool
+  default     = false
 }
 
 variable "api_key_source" {
-  type    = string
-  default = "HEADER"
+  description = "Source of the API key for requests (HEADER or AUTHORIZER)"
+  type        = string
+  default     = "HEADER"
 
   validation {
     condition     = contains(["HEADER", "AUTHORIZER"], var.api_key_source)

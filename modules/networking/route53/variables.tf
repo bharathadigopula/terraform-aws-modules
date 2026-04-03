@@ -3,27 +3,32 @@
 #==============================================================================
 
 variable "create_zone" {
-  type    = bool
-  default = true
+  description = "Whether to create the Route53 hosted zone"
+  type        = bool
+  default     = true
 }
 
 variable "zone_name" {
-  type = string
+  description = "Name of the Route53 hosted zone"
+  type        = string
 }
 
 variable "comment" {
-  type    = string
-  default = ""
+  description = "Comment for the Route53 hosted zone"
+  type        = string
+  default     = ""
 }
 
 variable "force_destroy" {
-  type    = bool
-  default = false
+  description = "Whether to force destroy the zone and all associated records"
+  type        = bool
+  default     = false
 }
 
 variable "delegation_set_id" {
-  type    = string
-  default = null
+  description = "ID of the reusable delegation set to assign to the hosted zone"
+  type        = string
+  default     = null
 }
 
 #==============================================================================
@@ -31,6 +36,7 @@ variable "delegation_set_id" {
 #==============================================================================
 
 variable "vpc_associations" {
+  description = "List of VPCs to associate with a private hosted zone"
   type = list(object({
     vpc_id     = string
     vpc_region = optional(string, null)
@@ -43,6 +49,7 @@ variable "vpc_associations" {
 #==============================================================================
 
 variable "records" {
+  description = "List of DNS record objects to create in the hosted zone"
   type = list(object({
     name = string
     type = string
@@ -86,6 +93,7 @@ variable "records" {
 #==============================================================================
 
 variable "health_checks" {
+  description = "List of Route53 health check configurations"
   type = list(object({
     fqdn              = string
     port              = optional(number, 443)
@@ -103,6 +111,7 @@ variable "health_checks" {
 #==============================================================================
 
 variable "tags" {
-  type    = map(string)
-  default = {}
+  description = "Map of tags to apply to all resources"
+  type        = map(string)
+  default     = {}
 }

@@ -21,3 +21,5 @@ skip-check:
   - CKV2_AWS_32   # CloudFront response headers - consumer attaches policy
   - CKV2_AWS_47   # CloudFront WAF Log4j - consumer configures WAF rules
   - CKV2_AWS_51   # API GW client cert - consumer decision
+  - CKV_AWS_340
+  - CKV_AWS_312

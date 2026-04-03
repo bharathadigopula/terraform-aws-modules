@@ -63,12 +63,6 @@ variable "associated_gateway_id" {
   default     = ""
 }
 
-variable "associated_gateway_type" {
-  description = "Type of associated gateway (virtualPrivateGateway or transitGateway)"
-  type        = string
-  default     = "virtualPrivateGateway"
-}
-
 variable "allowed_prefixes" {
   description = "List of CIDR prefixes allowed to be advertised over the DX gateway association"
   type        = list(string)

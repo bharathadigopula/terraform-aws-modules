@@ -3,15 +3,18 @@
 #==============================================================================
 
 output "zone_id" {
-  value = try(aws_route53_zone.this[0].zone_id, null)
+  description = "The ID of the Route53 hosted zone"
+  value       = try(aws_route53_zone.this[0].zone_id, null)
 }
 
 output "zone_arn" {
-  value = try(aws_route53_zone.this[0].arn, null)
+  description = "The ARN of the Route53 hosted zone"
+  value       = try(aws_route53_zone.this[0].arn, null)
 }
 
 output "zone_name_servers" {
-  value = try(aws_route53_zone.this[0].name_servers, [])
+  description = "List of name servers for the Route53 hosted zone"
+  value       = try(aws_route53_zone.this[0].name_servers, [])
 }
 
 #==============================================================================
@@ -19,11 +22,13 @@ output "zone_name_servers" {
 #==============================================================================
 
 output "record_names" {
-  value = [for r in aws_route53_record.this : r.name]
+  description = "List of DNS record names created in the hosted zone"
+  value       = [for r in aws_route53_record.this : r.name]
 }
 
 output "record_fqdns" {
-  value = [for r in aws_route53_record.this : r.fqdn]
+  description = "List of fully qualified domain names for the DNS records"
+  value       = [for r in aws_route53_record.this : r.fqdn]
 }
 
 #==============================================================================
@@ -31,5 +36,6 @@ output "record_fqdns" {
 #==============================================================================
 
 output "health_check_ids" {
-  value = [for hc in aws_route53_health_check.this : hc.id]
+  description = "List of IDs for the Route53 health checks"
+  value       = [for hc in aws_route53_health_check.this : hc.id]
 }
