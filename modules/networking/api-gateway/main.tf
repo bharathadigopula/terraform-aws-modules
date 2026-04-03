@@ -3,8 +3,8 @@
 #==============================================================================
 
 locals {
-  is_v2  = var.api_type == "http"
-  is_v1  = var.api_type == "rest"
+  is_v2 = var.api_type == "http"
+  is_v1 = var.api_type == "rest"
 
   default_log_format = jsonencode({
     requestId      = "$context.requestId"
@@ -82,10 +82,10 @@ resource "aws_apigatewayv2_stage" "this" {
 resource "aws_apigatewayv2_integration" "this" {
   for_each = local.is_v2 ? var.routes : {}
 
-  api_id             = aws_apigatewayv2_api.this[0].id
-  integration_uri    = each.value.integration_uri
-  integration_type   = each.value.integration_type
-  integration_method = each.value.integration_method
+  api_id                 = aws_apigatewayv2_api.this[0].id
+  integration_uri        = each.value.integration_uri
+  integration_type       = each.value.integration_type
+  integration_method     = each.value.integration_method
   payload_format_version = "2.0"
 }
 
@@ -187,6 +187,7 @@ resource "aws_api_gateway_stage" "this" {
 
     content {
       destination_arn = access_log_settings.value.destination_arn
+      format          = lookup(access_log_settings.value, "format", "$context.requestId $context.httpMethod $context.path $context.status")
     }
   }
 

@@ -113,11 +113,11 @@ variable "stateless_rule_groups" {
       priority = number
       actions  = list(string)
       match_attributes = object({
-        protocols          = list(number)
-        source_cidrs       = list(string)
-        destination_cidrs  = list(string)
-        source_ports       = list(object({ from_port = number, to_port = number }))
-        destination_ports  = list(object({ from_port = number, to_port = number }))
+        protocols         = list(number)
+        source_cidrs      = list(string)
+        destination_cidrs = list(string)
+        source_ports      = list(object({ from_port = number, to_port = number }))
+        destination_ports = list(object({ from_port = number, to_port = number }))
       })
     }))
   }))

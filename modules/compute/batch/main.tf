@@ -3,10 +3,10 @@
 #==============================================================================
 
 resource "aws_batch_compute_environment" "this" {
-  name = var.name
-  type                     = var.compute_environment_type
-  state                    = var.state
-  service_role             = var.service_role
+  name         = var.name
+  type         = var.compute_environment_type
+  state        = var.state
+  service_role = var.service_role
 
   dynamic "compute_resources" {
     for_each = var.compute_resources != null ? [var.compute_resources] : []

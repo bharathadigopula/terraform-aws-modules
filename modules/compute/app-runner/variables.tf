@@ -47,10 +47,10 @@ variable "code_repository" {
       value = string
     })
     code_configuration = object({
-      configuration_source = string
+      configuration_source          = string
       build_command                 = optional(string)
-      runtime                      = optional(string)
-      port                         = optional(string)
+      runtime                       = optional(string)
+      port                          = optional(string)
       start_command                 = optional(string)
       runtime_environment_variables = optional(map(string))
     })
@@ -93,12 +93,12 @@ variable "instance_configuration" {
 
 variable "health_check_configuration" {
   type = object({
-    protocol             = optional(string, "TCP")
-    path                 = optional(string)
-    interval             = optional(number, 5)
-    timeout              = optional(number, 2)
-    healthy_threshold    = optional(number, 1)
-    unhealthy_threshold  = optional(number, 5)
+    protocol            = optional(string, "TCP")
+    path                = optional(string)
+    interval            = optional(number, 5)
+    timeout             = optional(number, 2)
+    healthy_threshold   = optional(number, 1)
+    unhealthy_threshold = optional(number, 5)
   })
   description = "Health check configuration for the App Runner service"
   default     = null

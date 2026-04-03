@@ -13,11 +13,11 @@ locals {
 resource "aws_dx_connection" "this" {
   count = var.create_connection ? 1 : 0
 
-  name            = var.name
-  bandwidth       = var.connection_bandwidth
-  location        = var.connection_location
-  provider_name   = var.connection_provider_name
-  tags            = merge(var.tags, { Name = var.name })
+  name          = var.name
+  bandwidth     = var.connection_bandwidth
+  location      = var.connection_location
+  provider_name = var.connection_provider_name
+  tags          = merge(var.tags, { Name = var.name })
 }
 
 #==============================================================================
@@ -39,12 +39,7 @@ resource "aws_dx_gateway_association" "this" {
   dx_gateway_id         = aws_dx_gateway.this.id
   associated_gateway_id = var.associated_gateway_id
 
-  dynamic "allowed_prefixes" {
-    for_each = var.allowed_prefixes
-    content {
-      cidr = allowed_prefixes.value
-    }
-  }
+  allowed_prefixes = var.allowed_prefixes
 }
 
 #==============================================================================

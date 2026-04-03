@@ -8,13 +8,13 @@ variable "name" {
 }
 
 variable "description" {
-  type        = string
-  default     = ""
+  type    = string
+  default = ""
 }
 
 variable "api_type" {
-  type        = string
-  default     = "http"
+  type    = string
+  default = "http"
 
   validation {
     condition     = contains(["rest", "http"], var.api_type)
@@ -23,8 +23,8 @@ variable "api_type" {
 }
 
 variable "protocol_type" {
-  type        = string
-  default     = "HTTP"
+  type    = string
+  default = "HTTP"
 
   validation {
     condition     = contains(["HTTP", "WEBSOCKET"], var.protocol_type)

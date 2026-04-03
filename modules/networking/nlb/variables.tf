@@ -66,12 +66,12 @@ variable "access_logs" {
 variable "target_groups" {
   description = "List of target group configurations"
   type = list(object({
-    name                = string
-    port                = number
-    protocol            = string
-    target_type         = optional(string, "ip")
+    name                 = string
+    port                 = number
+    protocol             = string
+    target_type          = optional(string, "ip")
     deregistration_delay = optional(number, 300)
-    preserve_client_ip  = optional(bool, null)
+    preserve_client_ip   = optional(bool, null)
     health_check = optional(object({
       enabled             = optional(bool, true)
       protocol            = optional(string, "TCP")

@@ -145,10 +145,10 @@ variable "instance_refresh" {
   type = object({
     strategy = string
     preferences = optional(object({
-      min_healthy_percentage  = optional(number, 90)
-      instance_warmup         = optional(number, 300)
-      checkpoint_delay        = optional(number, 3600)
-      checkpoint_percentages  = optional(list(number), [])
+      min_healthy_percentage = optional(number, 90)
+      instance_warmup        = optional(number, 300)
+      checkpoint_delay       = optional(number, 3600)
+      checkpoint_percentages = optional(list(number), [])
     }))
   })
   default     = null
@@ -176,8 +176,8 @@ variable "warm_pool" {
 
 variable "scaling_policies" {
   type = list(object({
-    name                     = string
-    policy_type              = string
+    name                      = string
+    policy_type               = string
     estimated_instance_warmup = optional(number)
     cooldown                  = optional(number)
     target_tracking_configuration = optional(object({

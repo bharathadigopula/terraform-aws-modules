@@ -76,11 +76,11 @@ variable "job_queue_state" {
 
 variable "job_definitions" {
   type = list(object({
-    name                     = string
-    type                     = string
+    name                      = string
+    type                      = string
     container_properties_json = string
-    timeout_seconds          = optional(number)
-    retry_attempts           = optional(number, 1)
+    timeout_seconds           = optional(number)
+    retry_attempts            = optional(number, 1)
   }))
   description = "List of Batch job definitions to create"
   default     = []

@@ -67,11 +67,11 @@ resource "aws_lambda_function" "this" {
   timeout     = var.timeout
   memory_size = var.memory_size
 
-  filename         = var.filename
-  s3_bucket        = var.s3_bucket
-  s3_key           = var.s3_key
+  filename          = var.filename
+  s3_bucket         = var.s3_bucket
+  s3_key            = var.s3_key
   s3_object_version = var.s3_object_version
-  source_code_hash = var.source_code_hash
+  source_code_hash  = var.source_code_hash
 
   layers                         = length(var.layers) > 0 ? var.layers : null
   publish                        = var.publish

@@ -8,7 +8,7 @@ output "compute_environment_arn" {
 }
 
 output "compute_environment_name" {
-  value       = aws_batch_compute_environment.this.compute_environment_name
+  value       = aws_batch_compute_environment.this.name
   description = "Name of the Batch compute environment"
 }
 

@@ -82,13 +82,13 @@ variable "origins" {
 
 variable "default_cache_behavior" {
   type = object({
-    allowed_methods          = optional(list(string), ["GET", "HEAD"])
-    cached_methods           = optional(list(string), ["GET", "HEAD"])
-    target_origin_id         = string
-    viewer_protocol_policy   = optional(string, "redirect-to-https")
-    compress                 = optional(bool, true)
-    cache_policy_id          = optional(string, null)
-    origin_request_policy_id = optional(string, null)
+    allowed_methods            = optional(list(string), ["GET", "HEAD"])
+    cached_methods             = optional(list(string), ["GET", "HEAD"])
+    target_origin_id           = string
+    viewer_protocol_policy     = optional(string, "redirect-to-https")
+    compress                   = optional(bool, true)
+    cache_policy_id            = optional(string, null)
+    origin_request_policy_id   = optional(string, null)
     response_headers_policy_id = optional(string, null)
     forwarded_values = optional(object({
       query_string = optional(bool, false)
@@ -119,14 +119,14 @@ variable "default_cache_behavior" {
 
 variable "ordered_cache_behaviors" {
   type = list(object({
-    path_pattern             = string
-    allowed_methods          = optional(list(string), ["GET", "HEAD"])
-    cached_methods           = optional(list(string), ["GET", "HEAD"])
-    target_origin_id         = string
-    viewer_protocol_policy   = optional(string, "redirect-to-https")
-    compress                 = optional(bool, true)
-    cache_policy_id          = optional(string, null)
-    origin_request_policy_id = optional(string, null)
+    path_pattern               = string
+    allowed_methods            = optional(list(string), ["GET", "HEAD"])
+    cached_methods             = optional(list(string), ["GET", "HEAD"])
+    target_origin_id           = string
+    viewer_protocol_policy     = optional(string, "redirect-to-https")
+    compress                   = optional(bool, true)
+    cache_policy_id            = optional(string, null)
+    origin_request_policy_id   = optional(string, null)
     response_headers_policy_id = optional(string, null)
     forwarded_values = optional(object({
       query_string = optional(bool, false)

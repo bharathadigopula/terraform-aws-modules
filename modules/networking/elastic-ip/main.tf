@@ -21,9 +21,9 @@ resource "aws_eip" "this" {
 resource "aws_eip_association" "instance" {
   count = length(var.instance_ids)
 
-  allocation_id        = aws_eip.this[count.index].id
-  instance_id          = var.instance_ids[count.index]
-  allow_reassociation  = var.allow_reassociation
+  allocation_id       = aws_eip.this[count.index].id
+  instance_id         = var.instance_ids[count.index]
+  allow_reassociation = var.allow_reassociation
 }
 
 #==============================================================================

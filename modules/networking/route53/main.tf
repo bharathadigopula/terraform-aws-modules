@@ -108,12 +108,12 @@ resource "aws_route53_health_check" "this" {
   for_each = local.health_checks_map
 
   fqdn              = each.value.fqdn
-  port               = each.value.port
-  type               = each.value.search_string != null ? "${each.value.type}_STR_MATCH" : each.value.type
-  resource_path      = each.value.resource_path
-  failure_threshold  = each.value.failure_threshold
-  request_interval   = each.value.request_interval
-  search_string      = each.value.search_string
+  port              = each.value.port
+  type              = each.value.search_string != null ? "${each.value.type}_STR_MATCH" : each.value.type
+  resource_path     = each.value.resource_path
+  failure_threshold = each.value.failure_threshold
+  request_interval  = each.value.request_interval
+  search_string     = each.value.search_string
 
   tags = merge(var.tags, {
     Name = each.value.fqdn

@@ -78,9 +78,9 @@ variable "vpc_attachments" {
 
 variable "route_table_routes" {
   type = list(object({
-    destination_cidr_block      = string
+    destination_cidr_block        = string
     transit_gateway_attachment_id = optional(string, null)
-    blackhole                   = optional(bool, false)
+    blackhole                     = optional(bool, false)
   }))
   default     = []
   description = "List of route entries for the Transit Gateway route table"

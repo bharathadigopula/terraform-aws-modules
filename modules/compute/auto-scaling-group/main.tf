@@ -40,10 +40,10 @@ resource "aws_autoscaling_group" "this" {
         for_each = instance_refresh.value.preferences != null ? [instance_refresh.value.preferences] : []
 
         content {
-          min_healthy_percentage  = preferences.value.min_healthy_percentage
-          instance_warmup         = preferences.value.instance_warmup
-          checkpoint_delay        = preferences.value.checkpoint_delay
-          checkpoint_percentages  = preferences.value.checkpoint_percentages
+          min_healthy_percentage = preferences.value.min_healthy_percentage
+          instance_warmup        = preferences.value.instance_warmup
+          checkpoint_delay       = preferences.value.checkpoint_delay
+          checkpoint_percentages = preferences.value.checkpoint_percentages
         }
       }
     }
@@ -60,7 +60,10 @@ resource "aws_autoscaling_group" "this" {
       pool_state                  = warm_pool.value.pool_state
       min_size                    = warm_pool.value.min_size
       max_group_prepared_capacity = warm_pool.value.max_group_prepared_capacity
-      reuse_on_scale_in           = warm_pool.value.reuse_on_scale_in
+
+      instance_reuse_policy {
+        reuse_on_scale_in = warm_pool.value.reuse_on_scale_in
+      }
     }
   }
 
@@ -86,12 +89,12 @@ resource "aws_autoscaling_group" "this" {
 resource "aws_autoscaling_policy" "this" {
   count = length(var.scaling_policies)
 
-  name                   = var.scaling_policies[count.index].name
-  autoscaling_group_name = aws_autoscaling_group.this.name
-  policy_type            = var.scaling_policies[count.index].policy_type
+  name                      = var.scaling_policies[count.index].name
+  autoscaling_group_name    = aws_autoscaling_group.this.name
+  policy_type               = var.scaling_policies[count.index].policy_type
   estimated_instance_warmup = var.scaling_policies[count.index].policy_type == "TargetTrackingScaling" ? var.scaling_policies[count.index].estimated_instance_warmup : null
-  cooldown               = var.scaling_policies[count.index].policy_type == "StepScaling" ? var.scaling_policies[count.index].cooldown : null
-  adjustment_type        = var.scaling_policies[count.index].policy_type == "StepScaling" ? "ChangeInCapacity" : null
+  cooldown                  = var.scaling_policies[count.index].policy_type == "StepScaling" ? var.scaling_policies[count.index].cooldown : null
+  adjustment_type           = var.scaling_policies[count.index].policy_type == "StepScaling" ? "ChangeInCapacity" : null
 
   dynamic "target_tracking_configuration" {
     for_each = var.scaling_policies[count.index].policy_type == "TargetTrackingScaling" && var.scaling_policies[count.index].target_tracking_configuration != null ? [var.scaling_policies[count.index].target_tracking_configuration] : []
