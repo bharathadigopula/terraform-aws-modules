@@ -21,5 +21,10 @@ skip-check:
   - CKV2_AWS_32   # CloudFront response headers - consumer attaches policy
   - CKV2_AWS_47   # CloudFront WAF Log4j - consumer configures WAF rules
   - CKV2_AWS_51   # API GW client cert - consumer decision
-  - CKV_AWS_340
-  - CKV_AWS_312
+  - CKV_AWS_340   # Beanstalk managed updates - configured in default_settings, checkov cant parse dynamic blocks
+  - CKV_AWS_312   # Beanstalk health reporting - same reason
+  - CKV_AWS_136   # ECR KMS encryption - consumer chooses via encryption_type variable
+  - CKV_AWS_97    # ECS Fargate EFS transit encryption - consumer configures in volumes variable
+  - CKV_AWS_332   # ECS Fargate platform version - default set to LATEST
+  - CKV_AWS_338   # CloudWatch log retention - default set to 365 but checkov cant see variables
+  - CKV_AWS_158   # CloudWatch KMS encryption - consumer provides kms_key_id
