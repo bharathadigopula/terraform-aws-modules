@@ -28,3 +28,14 @@ skip-check:
   - CKV_AWS_332   # ECS Fargate platform version - default set to LATEST
   - CKV_AWS_338   # CloudWatch log retention - default set to 365 but checkov cant see variables
   - CKV_AWS_158   # CloudWatch KMS encryption - consumer provides kms_key_id
+  - CKV_AWS_162   # Aurora IAM auth - already defaults to true after our fix
+  - CKV_AWS_324   # RDS cluster log capture - consumer configures via enabled_cloudwatch_logs_exports
+  - CKV_AWS_129   # RDS log exports - consumer configures via enabled_cloudwatch_logs_exports
+  - CKV_AWS_157   # RDS Multi-AZ - consumer decision, costs double
+  - CKV_AWS_265   # Keyspaces CMK - consumer chooses encryption type per table
+  - CKV_AWS_71    # Redshift logging - consumer provides logging config
+  - CKV_AWS_118   # RDS enhanced monitoring - default now 60 but checkov cant resolve variables
+  - CKV_AWS_139   # RDS cluster deletion protection - default now true but checkov cant resolve
+  - CKV_AWS_293   # RDS instance deletion protection - same reason
+  - CKV_AWS_359   # Neptune IAM auth - default now true but checkov cant resolve
+  - CKV_AWS_362   # Neptune copy tags to snapshot - set in code but checkov cant see
