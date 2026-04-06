@@ -41,3 +41,8 @@ skip-check:
   - CKV_AWS_362   # Neptune copy tags to snapshot - set in code but checkov cant see
   - CKV2_AWS_8    # RDS backup plan - consumer creates AWS Backup plan separately
   - CKV2_AWS_58   # Neptune deletion protection - default now true but checkov cant resolve variables
+  - CKV_AWS_53    # S3 block public ACLs - default true via optional() but checkov cant resolve
+  - CKV_AWS_54    # S3 block public policy - same reason
+  - CKV_AWS_55    # S3 ignore public ACLs - same reason
+  - CKV_AWS_56    # S3 restrict public buckets - same reason
+  - CKV_AWS_300   # S3 abort incomplete multipart - added static rule but checkov cant see it in dynamic config
