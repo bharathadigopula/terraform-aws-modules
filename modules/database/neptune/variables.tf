@@ -80,7 +80,7 @@ variable "skip_final_snapshot" {
 variable "deletion_protection" {
   type        = bool
   description = "Whether deletion protection is enabled on the cluster"
-  default     = false
+  default     = true
 }
 
 variable "iam_database_authentication_enabled" {

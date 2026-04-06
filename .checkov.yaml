@@ -39,3 +39,5 @@ skip-check:
   - CKV_AWS_293   # RDS instance deletion protection - same reason
   - CKV_AWS_359   # Neptune IAM auth - default now true but checkov cant resolve
   - CKV_AWS_362   # Neptune copy tags to snapshot - set in code but checkov cant see
+  - CKV2_AWS_8    # RDS backup plan - consumer creates AWS Backup plan separately
+  - CKV2_AWS_58   # Neptune deletion protection - default now true but checkov cant resolve variables
