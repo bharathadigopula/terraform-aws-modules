@@ -46,3 +46,10 @@ skip-check:
   - CKV_AWS_55    # S3 ignore public ACLs - same reason
   - CKV_AWS_56    # S3 restrict public buckets - same reason
   - CKV_AWS_300   # S3 abort incomplete multipart - added static rule but checkov cant see it in dynamic config
+  - CKV_AWS_19    # S3 encryption at rest - configured via separate server_side_encryption resource, checkov checks bucket only
+  - CKV_AWS_144   # S3 cross-region replication - consumer decision, separate s3-replication module exists
+  - CKV_AWS_145   # S3 KMS encryption - configured via server_side_encryption variable with KMS default
+  - CKV2_AWS_6    # S3 public access block - separate resource exists but checkov cant link it to bucket
+  - CKV2_AWS_62   # S3 event notifications - consumer configures separately
+  - CKV2_AWS_18   # EFS backup plan - consumer creates backup plan via backup module
+  - CKV2_AWS_9    # EBS backup plan - consumer creates backup plan via backup module
