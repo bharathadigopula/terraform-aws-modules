@@ -22,13 +22,13 @@ variable "rules" {
       tags   = optional(map(string))
     }))
     destination = object({
-      bucket_arn          = string
-      storage_class       = optional(string)
-      account_id          = optional(string)
-      replica_kms_key_id  = optional(string)
+      bucket_arn         = string
+      storage_class      = optional(string)
+      account_id         = optional(string)
+      replica_kms_key_id = optional(string)
     })
-    delete_marker_replication     = optional(string, "Enabled")
-    existing_object_replication   = optional(string, "Enabled")
+    delete_marker_replication   = optional(string, "Enabled")
+    existing_object_replication = optional(string, "Enabled")
   }))
 }
 
