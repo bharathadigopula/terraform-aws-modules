@@ -3,20 +3,62 @@ name: Terraform Validate
 on:
   push:
     branches: [main]
+    paths:
+      - 'modules/**'
+      - '.tflint.hcl'
   pull_request:
     branches: [main]
+    paths:
+      - 'modules/**'
+      - '.tflint.hcl'
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
-  validate:
-    name: Validate Terraform
+  detect-changes:
+    name: Detect Changed Modules
+    runs-on: ubuntu-latest
+    outputs:
+      changed_dirs: ${{ steps.changes.outputs.changed_dirs }}
+      has_changes: ${{ steps.changes.outputs.has_changes }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Find Changed Modules
+        id: changes
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            BASE=${{ github.event.pull_request.base.sha }}
+          else
+            BASE=${{ github.event.before }}
+          fi
+
+          if [ "$BASE" = "0000000000000000000000000000000000000000" ] || [ -z "$BASE" ]; then
+            DIRS=$(find modules -mindepth 2 -maxdepth 2 -type d | sort -u | jq -R -s -c 'split("\n") | map(select(length > 0))')
+          else
+            DIRS=$(git diff --name-only "$BASE" HEAD -- 'modules/' | awk -F/ '{print $1"/"$2"/"$3}' | sort -u | jq -R -s -c 'split("\n") | map(select(length > 0))')
+          fi
+
+          echo "changed_dirs=$DIRS" >> "$GITHUB_OUTPUT"
+
+          if [ "$DIRS" = "[]" ] || [ "$DIRS" = '[""]' ]; then
+            echo "has_changes=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_changes=true" >> "$GITHUB_OUTPUT"
+          fi
+
+  format:
+    name: Terraform Format
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v4
@@ -26,23 +68,44 @@ jobs:
       - name: Terraform Format Check
         run: terraform fmt -check -recursive
 
-      - name: Validate All Modules
-        run: |
-          for dir in modules/*/*/; do
-            echo "Validating ${dir}..."
-            cd "${dir}"
-            terraform init -backend=false
-            terraform validate
-            cd -
-          done
-
-  tflint:
-    name: TFLint
+  validate:
+    name: Validate Changed Modules
+    needs: detect-changes
+    if: needs.detect-changes.outputs.has_changes == 'true'
     runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        dir: ${{ fromJson(needs.detect-changes.outputs.changed_dirs) }}
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v4
+        with:
+          terraform_version: 1.9.0
+
+      - name: Validate ${{ matrix.dir }}
+        run: |
+          cd "${{ matrix.dir }}"
+          terraform init -backend=false
+          terraform validate
+
+  tflint:
+    name: TFLint Changed Modules
+    needs: detect-changes
+    if: needs.detect-changes.outputs.has_changes == 'true'
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        dir: ${{ fromJson(needs.detect-changes.outputs.changed_dirs) }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
 
       - name: Setup TFLint
         uses: terraform-linters/setup-tflint@v6
@@ -52,9 +115,5 @@ jobs:
       - name: Init TFLint
         run: tflint --init --config .tflint.hcl
 
-      - name: Run TFLint on All Modules
-        run: |
-          for dir in modules/*/*/; do
-            echo "Linting ${dir}..."
-            tflint --chdir="${dir}" --config "$(pwd)/.tflint.hcl"
-          done
+      - name: Lint ${{ matrix.dir }}
+        run: tflint --chdir="${{ matrix.dir }}" --config "$(pwd)/.tflint.hcl"
