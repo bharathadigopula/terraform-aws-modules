@@ -12,14 +12,8 @@ resource "aws_grafana_workspace" "this" {
   notification_destinations = var.notification_destinations
   organizational_units      = var.organizational_units
   stack_set_name            = var.stack_set_name
-  grafana_version           = var.grafana_version
-
-  dynamic "configuration" {
-    for_each = var.configuration_json != null ? [1] : []
-    content {
-      json = var.configuration_json
-    }
-  }
+  grafana_version = var.grafana_version
+  configuration   = var.configuration_json
 
   tags = var.tags
 }

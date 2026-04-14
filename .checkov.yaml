@@ -68,3 +68,5 @@ skip-check:
   - CKV2_AWS_27   # Config recorder enabled - default true but checkov cant resolve variables
   - CKV_AWS_346   # Grafana network access - consumer decision on network type
   - CKV_AWS_302   # Prometheus KMS encryption - consumer provides kms_key_arn variable
+  - CKV2_AWS_34   # SSM parameter encryption - consumer chooses type SecureString and provides kms_key_id
+  - CKV2_AWS_45   # Config recorder all resources - default recording_all_supported=true but checkov cant resolve
