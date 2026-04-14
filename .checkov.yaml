@@ -53,3 +53,9 @@ skip-check:
   - CKV2_AWS_62   # S3 event notifications - consumer configures separately
   - CKV2_AWS_18   # EFS backup plan - consumer creates backup plan via backup module
   - CKV2_AWS_9    # EBS backup plan - consumer creates backup plan via backup module
+  - CKV_AWS_273   # IAM users via SSO - module provides both IAM users and SSO, consumer chooses
+  - CKV_AWS_40    # IAM policy on users - module supports user-level attachments for flexibility
+  - CKV_AWS_192   # WAF Log4j rule - consumer adds managed rules via managed_rules variable
+  - CKV2_AWS_3    # GuardDuty org/region - consumer enables per org via admin_account_id variable
+  - CKV2_AWS_21   # IAM user group membership - consumer manages memberships via groups variable
+  - CKV2_AWS_14   # IAM group has users - consumer adds users via user_names in groups variable

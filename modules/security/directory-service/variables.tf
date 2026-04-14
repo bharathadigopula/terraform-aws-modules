@@ -39,7 +39,7 @@ variable "short_name" {
 variable "description" {
   description = "Description for the directory"
   type        = string
-  default     = ""
+  default     = null
 }
 
 variable "alias" {

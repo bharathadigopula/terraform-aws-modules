@@ -9,7 +9,7 @@ variable "name" {
 variable "description" {
   description = "Description of the WAF Web ACL"
   type        = string
-  default     = ""
+  default     = "Managed by Terraform"
 }
 
 variable "scope" {
