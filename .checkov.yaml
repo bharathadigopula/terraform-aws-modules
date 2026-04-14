@@ -59,3 +59,12 @@ skip-check:
   - CKV2_AWS_3    # GuardDuty org/region - consumer enables per org via admin_account_id variable
   - CKV2_AWS_21   # IAM user group membership - consumer manages memberships via groups variable
   - CKV2_AWS_14   # IAM group has users - consumer adds users via user_names in groups variable
+  - CKV_AWS_252   # CloudTrail SNS topic - consumer provides sns_topic_name variable
+  - CKV_AWS_35    # CloudTrail KMS encryption - consumer provides kms_key_id variable
+  - CKV_AWS_36    # CloudTrail log file validation - default true but checkov cant resolve variables
+  - CKV2_AWS_10   # CloudTrail log group - consumer provides cloud_watch_logs_group_arn variable
+  - CKV_AWS_67    # CloudTrail multi-region - default true but checkov cant resolve variables
+  - CKV_AWS_84    # CloudWatch log group encryption - consumer provides kms_key_id
+  - CKV2_AWS_27   # Config recorder enabled - default true but checkov cant resolve variables
+  - CKV_AWS_346   # Grafana network access - consumer decision on network type
+  - CKV_AWS_302   # Prometheus KMS encryption - consumer provides kms_key_arn variable
