@@ -70,3 +70,10 @@ skip-check:
   - CKV_AWS_302   # Prometheus KMS encryption - consumer provides kms_key_arn variable
   - CKV2_AWS_34   # SSM parameter encryption - consumer chooses type SecureString and provides kms_key_id
   - CKV2_AWS_45   # Config recorder all resources - default recording_all_supported=true but checkov cant resolve
+  - CKV_AWS_27    # SNS topic encryption - consumer provides kms_master_key_id variable
+  - CKV_AWS_26    # SQS encryption - default sqs_managed_sse=true but checkov cant resolve variables
+  - CKV_AWS_169   # MQ broker audit logging - default true but checkov cant resolve variables
+  - CKV_AWS_197   # MQ broker minor version upgrade - default true but checkov cant resolve
+  - CKV_AWS_209   # MQ broker public access - default false but checkov cant resolve
+  - CKV_AWS_336   # Step Functions logging - consumer provides log_destination variable
+  - CKV_AWS_285   # EventBridge bus policy - consumer manages via permissions variable
