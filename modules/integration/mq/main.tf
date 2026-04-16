@@ -23,7 +23,7 @@ resource "aws_mq_broker" "this" {
   }
 
   dynamic "user" {
-    for_each = var.users
+    for_each = { for u in var.users : u.username => u }
     content {
       username       = user.value.username
       password       = user.value.password

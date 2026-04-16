@@ -82,7 +82,6 @@ variable "users" {
     console_access = optional(bool, false)
     groups         = optional(list(string), [])
   }))
-  sensitive = true
 }
 
 #==============================================================================
