@@ -97,3 +97,4 @@ skip-check:
   - CKV_AWS_171   # EMR security configuration SSE-KMS - consumer provides security_config_json
   - CKV_AWS_81    # MSK client-broker encryption - checkov parser bug on conditional dynamic block
   - CKV_AWS_80    # MSK broker logging - checkov parser bug on conditional dynamic block
+  - CKV2_AWS_7    # EMR security groups - consumer provides SGs via variables, module does not create them
