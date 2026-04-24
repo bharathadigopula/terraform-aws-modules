@@ -1,7 +1,7 @@
 #==============================================================================
 # TRUSTED ADVISOR OUTPUTS
 #==============================================================================
-output "organizational_view_id" {
-  description = "ID of the organizational view resource"
-  value       = try(aws_trustedadvisor_organizational_view.this[0].id, null)
+output "event_rule_arns" {
+  description = "Map of event rule names to ARNs"
+  value       = { for k, v in aws_cloudwatch_event_rule.this : k => v.arn }
 }
