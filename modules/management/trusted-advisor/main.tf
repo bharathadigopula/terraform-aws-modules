@@ -1,6 +1,6 @@
 #==============================================================================
-# TRUSTED ADVISOR ORGANIZATION ACCESS
+# TRUSTED ADVISOR ORGANIZATIONAL VIEW
 #==============================================================================
-resource "aws_trustedadvisor_organization_access" "this" {
-  count = var.enable_organization_access ? 1 : 0
+resource "aws_trustedadvisor_organizational_view" "this" {
+  count = var.enable_organizational_view ? 1 : 0
 }
