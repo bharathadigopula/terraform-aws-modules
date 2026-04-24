@@ -113,7 +113,11 @@ jobs:
           tflint_version: latest
 
       - name: Init TFLint
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: tflint --init --config .tflint.hcl
 
       - name: Lint ${{ matrix.dir }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: tflint --chdir="${{ matrix.dir }}" --config "$(pwd)/.tflint.hcl"
