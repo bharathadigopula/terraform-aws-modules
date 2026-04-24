@@ -77,3 +77,23 @@ skip-check:
   - CKV_AWS_209   # MQ broker public access - default false but checkov cant resolve
   - CKV_AWS_336   # Step Functions logging - consumer provides log_destination variable
   - CKV_AWS_285   # EventBridge bus policy - consumer manages via permissions variable
+  - CKV_AWS_77    # Athena encryption at rest - default SSE_S3 but checkov cant resolve variables
+  - CKV_AWS_82    # Athena workgroup encryption - default SSE_S3 but checkov cant resolve
+  - CKV_AWS_217   # Kinesis stream encryption - default KMS but checkov cant resolve variables
+  - CKV_AWS_43    # Kinesis stream encryption KMS - default alias/aws/kinesis but checkov cant resolve
+  - CKV_AWS_241   # Firehose encryption - default true but checkov cant resolve variables
+  - CKV_AWS_318   # MSK enhanced monitoring - consumer sets via enhanced_monitoring variable
+  - CKV_AWS_291   # MSK broker logging to S3 - consumer enables via enable_s3_logs variable
+  - CKV_AWS_317   # OpenSearch audit logs - consumer provides via log_publishing_options
+  - CKV_AWS_247   # OpenSearch encryption KMS - consumer provides kms_key_id variable
+  - CKV_AWS_248   # OpenSearch in-transit encryption - hardcoded enforce_https=true
+  - CKV2_AWS_52   # OpenSearch logging - consumer configures via log_publishing_options
+  - CKV2_AWS_59   # OpenSearch cluster fine-grained access - consumer enables via enable_fine_grained_access_control
+  - CKV_AWS_232   # EMR block public access - cluster-level managed externally
+  - CKV_AWS_58    # EMR security configuration - consumer provides security_config_json
+  - CKV_AWS_23    # EMR logging - consumer provides log_uri variable
+  - CKV_AWS_121   # Glue security configuration - consumer attaches via crawlers and jobs
+  - CKV_AWS_195   # Glue security configuration encryption - consumer decision
+  - CKV_AWS_171   # EMR security configuration SSE-KMS - consumer provides security_config_json
+  - CKV_AWS_81    # MSK client-broker encryption - checkov parser bug on conditional dynamic block
+  - CKV_AWS_80    # MSK broker logging - checkov parser bug on conditional dynamic block
