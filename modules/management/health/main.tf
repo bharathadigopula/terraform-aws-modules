@@ -1,11 +1,4 @@
 #==============================================================================
-# AWS HEALTH ORGANIZATION STATUS
-#==============================================================================
-resource "aws_health_organizational_view_access" "this" {
-  count = var.enable_organizational_view ? 1 : 0
-}
-
-#==============================================================================
 # HEALTH EVENT NOTIFICATION VIA EVENTBRIDGE
 #==============================================================================
 resource "aws_cloudwatch_event_rule" "health" {

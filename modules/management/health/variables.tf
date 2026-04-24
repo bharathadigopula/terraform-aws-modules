@@ -1,13 +1,4 @@
 #==============================================================================
-# HEALTH VARIABLES
-#==============================================================================
-variable "enable_organizational_view" {
-  description = "Whether to enable organizational view for AWS Health"
-  type        = bool
-  default     = false
-}
-
-#==============================================================================
 # EVENT RULE VARIABLES
 #==============================================================================
 variable "event_rules" {
