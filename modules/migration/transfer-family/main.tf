@@ -8,7 +8,7 @@ resource "aws_transfer_server" "this" {
   certificate                      = each.value.certificate
   directory_id                     = each.value.directory_id
   domain                           = each.value.domain
-  endpoint_type                    = each.value.endpoint_type
+  endpoint_type                    = "VPC"
   force_destroy                    = each.value.force_destroy
   function                         = each.value.function
   host_key                         = each.value.host_key
@@ -18,7 +18,7 @@ resource "aws_transfer_server" "this" {
   post_authentication_login_banner = each.value.post_authentication_login_banner
   pre_authentication_login_banner  = each.value.pre_authentication_login_banner
   protocols                        = each.value.protocols
-  security_policy_name             = each.value.security_policy_name
+  security_policy_name             = "TransferSecurityPolicy-2025-03"
   sftp_authentication_methods      = each.value.sftp_authentication_methods
   structured_log_destinations      = each.value.structured_log_destinations
   url                              = each.value.url
