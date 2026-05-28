@@ -1,4 +1,30 @@
 #==============================================================================
+# SAGEMAKER NOTEBOOK IAM ROLES
+#==============================================================================
+
+resource "aws_iam_role" "notebook" {
+  for_each = { for notebook in var.notebook_instances : notebook.name => notebook if notebook.role_arn == null }
+
+  name                 = each.value.role_name
+  name_prefix          = each.value.role_name == null ? "${each.value.name}-" : null
+  path                 = each.value.role_path
+  permissions_boundary = each.value.role_permissions_boundary
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = "sts:AssumeRole"
+        Principal = {
+          Service = "sagemaker.amazonaws.com"
+        }
+      }
+    ]
+  })
+  tags = merge(var.tags, each.value.tags)
+}
+
+#==============================================================================
 # SAGEMAKER NOTEBOOK INSTANCES
 #==============================================================================
 
@@ -6,7 +32,7 @@ resource "aws_sagemaker_notebook_instance" "this" {
   for_each = { for notebook in var.notebook_instances : notebook.name => notebook }
 
   name                         = each.value.name
-  role_arn                     = each.value.role_arn
+  role_arn                     = each.value.role_arn != null ? each.value.role_arn : aws_iam_role.notebook[each.key].arn
   instance_type                = each.value.instance_type
   subnet_id                    = each.value.subnet_id
   security_groups              = each.value.security_groups

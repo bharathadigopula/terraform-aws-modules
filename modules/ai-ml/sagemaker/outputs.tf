@@ -12,6 +12,11 @@ output "notebook_instance_urls" {
   value       = { for k, v in aws_sagemaker_notebook_instance.this : k => v.url }
 }
 
+output "notebook_role_arns" {
+  description = "Map of SageMaker notebook IAM role ARNs created by this module"
+  value       = { for k, v in aws_iam_role.notebook : k => v.arn }
+}
+
 output "model_names" {
   description = "Map of SageMaker model names"
   value       = { for k, v in aws_sagemaker_model.this : k => v.name }

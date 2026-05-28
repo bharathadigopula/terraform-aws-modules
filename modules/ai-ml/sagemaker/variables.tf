@@ -6,7 +6,10 @@ variable "notebook_instances" {
   description = "List of SageMaker notebook instances to create"
   type = list(object({
     name                                      = string
-    role_arn                                  = string
+    role_arn                                  = optional(string)
+    role_name                                 = optional(string)
+    role_path                                 = optional(string)
+    role_permissions_boundary                 = optional(string)
     instance_type                             = string
     subnet_id                                 = optional(string)
     security_groups                           = optional(set(string))
