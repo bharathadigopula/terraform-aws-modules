@@ -144,7 +144,7 @@ variable "propagate_tags" {
   default     = null
 
   validation {
-    condition     = var.propagate_tags == null || contains(["TASK_DEFINITION", "SERVICE", "NONE"], var.propagate_tags)
+    condition     = var.propagate_tags == null ? true : contains(["TASK_DEFINITION", "SERVICE", "NONE"], var.propagate_tags)
     error_message = "propagate_tags must be TASK_DEFINITION, SERVICE, or NONE."
   }
 }

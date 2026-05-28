@@ -141,6 +141,9 @@ resource "aws_bedrockagent_agent" "this" {
   prepare_agent               = each.value.prepare_agent
   skip_resource_in_use_check  = each.value.skip_resource_in_use_check
   agent_collaboration         = each.value.agent_collaboration
-  guardrail_configuration     = each.value.guardrail_configuration
-  tags                        = merge(var.tags, each.value.tags)
+  guardrail_configuration {
+    guardrail_identifier = each.value.guardrail_configuration[0].guardrail_identifier
+    guardrail_version    = each.value.guardrail_configuration[0].guardrail_version
+  }
+  tags = merge(var.tags, each.value.tags)
 }

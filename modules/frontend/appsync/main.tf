@@ -17,14 +17,10 @@ resource "aws_appsync_graphql_api" "this" {
   merged_api_execution_role_arn = each.value.merged_api_execution_role_arn
   tags                          = merge(var.tags, each.value.tags)
 
-  dynamic "log_config" {
-    for_each = each.value.log_config != null ? [each.value.log_config] : []
-
-    content {
-      cloudwatch_logs_role_arn = log_config.value.cloudwatch_logs_role_arn
-      field_log_level          = log_config.value.field_log_level
-      exclude_verbose_content  = log_config.value.exclude_verbose_content
-    }
+  log_config {
+    cloudwatch_logs_role_arn = each.value.log_config.cloudwatch_logs_role_arn
+    field_log_level          = "ERROR"
+    exclude_verbose_content  = try(each.value.log_config.exclude_verbose_content, true)
   }
 
   dynamic "user_pool_config" {

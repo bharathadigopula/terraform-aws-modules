@@ -81,29 +81,21 @@ resource "aws_codebuild_project" "this" {
     }
   }
 
-  dynamic "logs_config" {
-    for_each = each.value.logs_config != null ? [each.value.logs_config] : []
+  logs_config {
+    cloudwatch_logs {
+      status      = "ENABLED"
+      group_name  = try(each.value.logs_config.cloudwatch_logs.group_name, null)
+      stream_name = try(each.value.logs_config.cloudwatch_logs.stream_name, null)
+    }
 
-    content {
-      dynamic "cloudwatch_logs" {
-        for_each = logs_config.value.cloudwatch_logs != null ? [logs_config.value.cloudwatch_logs] : []
+    dynamic "s3_logs" {
+      for_each = try(each.value.logs_config.s3_logs, null) != null ? [each.value.logs_config.s3_logs] : []
 
-        content {
-          status      = cloudwatch_logs.value.status
-          group_name  = cloudwatch_logs.value.group_name
-          stream_name = cloudwatch_logs.value.stream_name
-        }
-      }
-
-      dynamic "s3_logs" {
-        for_each = logs_config.value.s3_logs != null ? [logs_config.value.s3_logs] : []
-
-        content {
-          status              = s3_logs.value.status
-          location            = s3_logs.value.location
-          encryption_disabled = s3_logs.value.encryption_disabled
-          bucket_owner_access = s3_logs.value.bucket_owner_access
-        }
+      content {
+        status              = s3_logs.value.status
+        location            = s3_logs.value.location
+        encryption_disabled = s3_logs.value.encryption_disabled
+        bucket_owner_access = s3_logs.value.bucket_owner_access
       }
     }
   }

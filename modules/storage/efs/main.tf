@@ -45,9 +45,9 @@ resource "aws_efs_access_point" "this" {
   file_system_id = aws_efs_file_system.this.id
 
   dynamic "root_directory" {
-    for_each = each.value.root_directory_path != null ? [1] : []
+    for_each = each.value.root_directory_path != null ? [each.value.root_directory_path] : []
     content {
-      path = each.value.root_directory_path
+      path = root_directory.value
 
       dynamic "creation_info" {
         for_each = each.value.root_directory_creation_info != null ? [each.value.root_directory_creation_info] : []

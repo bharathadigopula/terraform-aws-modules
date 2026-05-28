@@ -15,11 +15,11 @@ variable "graphql_apis" {
     query_depth_limit             = optional(number)
     resolver_count_limit          = optional(number)
     merged_api_execution_role_arn = optional(string)
-    log_config = optional(object({
+    log_config = object({
       cloudwatch_logs_role_arn = string
-      field_log_level          = string
+      field_log_level          = optional(string)
       exclude_verbose_content  = optional(bool)
-    }))
+    })
     user_pool_config = optional(object({
       default_action      = string
       user_pool_id        = string

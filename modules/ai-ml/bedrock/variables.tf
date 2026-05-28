@@ -90,13 +90,18 @@ variable "agents" {
     prepare_agent               = optional(bool)
     skip_resource_in_use_check  = optional(bool)
     agent_collaboration         = optional(string)
-    guardrail_configuration = optional(list(object({
+    guardrail_configuration = list(object({
       guardrail_identifier = string
       guardrail_version    = string
-    })))
+    }))
     tags = optional(map(string), {})
   }))
   default = []
+
+  validation {
+    condition     = alltrue([for agent in var.agents : length(agent.guardrail_configuration) > 0])
+    error_message = "Each Bedrock agent must include at least one guardrail configuration."
+  }
 }
 
 #==============================================================================

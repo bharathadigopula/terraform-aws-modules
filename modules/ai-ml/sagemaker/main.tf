@@ -12,20 +12,16 @@ resource "aws_sagemaker_notebook_instance" "this" {
   security_groups              = each.value.security_groups
   kms_key_id                   = each.value.kms_key_id
   lifecycle_config_name        = each.value.lifecycle_config_name
-  direct_internet_access       = each.value.direct_internet_access
-  root_access                  = each.value.root_access
+  direct_internet_access       = "Disabled"
+  root_access                  = "Disabled"
   volume_size                  = each.value.volume_size
   default_code_repository      = each.value.default_code_repository
   additional_code_repositories = each.value.additional_code_repositories
   platform_identifier          = each.value.platform_identifier
   tags                         = merge(var.tags, each.value.tags)
 
-  dynamic "instance_metadata_service_configuration" {
-    for_each = each.value.minimum_instance_metadata_service_version != null ? [each.value.minimum_instance_metadata_service_version] : []
-
-    content {
-      minimum_instance_metadata_service_version = instance_metadata_service_configuration.value
-    }
+  instance_metadata_service_configuration {
+    minimum_instance_metadata_service_version = "2"
   }
 }
 
@@ -38,7 +34,7 @@ resource "aws_sagemaker_model" "this" {
 
   name                     = each.value.name
   execution_role_arn       = each.value.execution_role_arn
-  enable_network_isolation = each.value.enable_network_isolation
+  enable_network_isolation = true
   tags                     = merge(var.tags, each.value.tags)
 
   dynamic "primary_container" {

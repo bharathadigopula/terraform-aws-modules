@@ -33,7 +33,7 @@ variable "spread_level" {
   default     = null
 
   validation {
-    condition     = var.spread_level == null || contains(["host", "rack"], var.spread_level)
+    condition     = var.spread_level == null ? true : contains(["host", "rack"], var.spread_level)
     error_message = "Spread level must be host or rack."
   }
 }
