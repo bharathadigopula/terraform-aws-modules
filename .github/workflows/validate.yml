@@ -5,14 +5,12 @@ on:
     branches: [main]
     paths:
       - 'modules/**'
-      - 'examples/**'
       - '.tflint.hcl'
       - '.github/workflows/validate.yml'
   pull_request:
     branches: [main]
     paths:
       - 'modules/**'
-      - 'examples/**'
       - '.tflint.hcl'
       - '.github/workflows/validate.yml'
   workflow_dispatch:
@@ -27,8 +25,7 @@ jobs:
     outputs:
       changed_dirs: ${{ steps.changes.outputs.changed_dirs }}
       has_changes: ${{ steps.changes.outputs.has_changes }}
-      changed_examples: ${{ steps.changes.outputs.changed_examples }}
-      has_example_changes: ${{ steps.changes.outputs.has_example_changes }}
+      has_workflow_changes: ${{ steps.changes.outputs.has_workflow_changes }}
 
     steps:
       - name: Checkout
@@ -45,23 +42,27 @@ jobs:
             BASE=${{ github.event.before }}
           fi
 
+          WORKFLOW_CHANGES=false
+
           if [ "$BASE" = "0000000000000000000000000000000000000000" ] || [ -z "$BASE" ]; then
             DIRS=$(find modules -mindepth 2 -maxdepth 2 -type d | sort -u | jq -R -s -c 'split("\n") | map(select(length > 0))')
-            EXAMPLES=$(find examples -mindepth 1 -maxdepth 1 -type d | sort -u | jq -R -s -c 'split("\n") | map(select(length > 0))')
           else
-            SHARED=$(git diff --name-only "$BASE" HEAD -- '.tflint.hcl' '.github/workflows/validate.yml')
+            TFLINT_CONFIG=$(git diff --name-only "$BASE" HEAD -- '.tflint.hcl')
+            WORKFLOW_CONFIG=$(git diff --name-only "$BASE" HEAD -- '.github/workflows/validate.yml')
 
-            if [ -n "$SHARED" ]; then
+            if [ -n "$WORKFLOW_CONFIG" ]; then
+              WORKFLOW_CHANGES=true
+            fi
+
+            if [ -n "$TFLINT_CONFIG" ]; then
               DIRS=$(find modules -mindepth 2 -maxdepth 2 -type d | sort -u | jq -R -s -c 'split("\n") | map(select(length > 0))')
-              EXAMPLES=$(find examples -mindepth 1 -maxdepth 1 -type d | sort -u | jq -R -s -c 'split("\n") | map(select(length > 0))')
             else
               DIRS=$(git diff --name-only "$BASE" HEAD -- 'modules/' | awk -F/ '{print $1"/"$2"/"$3}' | sort -u | jq -R -s -c 'split("\n") | map(select(length > 0))')
-              EXAMPLES=$(git diff --name-only "$BASE" HEAD -- 'examples/' | awk -F/ 'NF >= 2 {print $1"/"$2}' | sort -u | jq -R -s -c 'split("\n") | map(select(length > 0))')
             fi
           fi
 
           echo "changed_dirs=$DIRS" >> "$GITHUB_OUTPUT"
-          echo "changed_examples=$EXAMPLES" >> "$GITHUB_OUTPUT"
+          echo "has_workflow_changes=$WORKFLOW_CHANGES" >> "$GITHUB_OUTPUT"
 
           if [ "$DIRS" = "[]" ] || [ "$DIRS" = '[""]' ]; then
             echo "has_changes=false" >> "$GITHUB_OUTPUT"
@@ -69,11 +70,26 @@ jobs:
             echo "has_changes=true" >> "$GITHUB_OUTPUT"
           fi
 
-          if [ "$EXAMPLES" = "[]" ] || [ "$EXAMPLES" = '[""]' ]; then
-            echo "has_example_changes=false" >> "$GITHUB_OUTPUT"
-          else
-            echo "has_example_changes=true" >> "$GITHUB_OUTPUT"
-          fi
+  validate-workflow-smoke:
+    name: Validate Workflow Smoke
+    needs: detect-changes
+    if: needs.detect-changes.outputs.has_workflow_changes == 'true'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v4
+        with:
+          terraform_version: 1.9.0
+
+      - name: Validate Module Smoke
+        run: |
+          cd modules/ai-ml/sagemaker
+          terraform init -backend=false
+          terraform validate
 
   format:
     name: Terraform Format
@@ -144,28 +160,3 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: tflint --chdir="${{ matrix.dir }}" --config "$(pwd)/.tflint.hcl"
-
-  validate-examples:
-    name: Validate Changed Examples
-    needs: detect-changes
-    if: needs.detect-changes.outputs.has_example_changes == 'true'
-    runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        dir: ${{ fromJson(needs.detect-changes.outputs.changed_examples) }}
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v5
-
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v4
-        with:
-          terraform_version: 1.9.0
-
-      - name: Validate ${{ matrix.dir }}
-        run: |
-          cd "${{ matrix.dir }}"
-          terraform init -backend=false
-          terraform validate

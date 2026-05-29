@@ -1,0 +1,130 @@
+name: Terraform Examples Validate
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'examples/**'
+      - 'modules/**'
+      - '.github/workflows/examples-validate.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'examples/**'
+      - 'modules/**'
+      - '.github/workflows/examples-validate.yml'
+  workflow_dispatch:
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  detect-example-changes:
+    name: Detect Changed Examples
+    runs-on: ubuntu-latest
+    outputs:
+      changed_examples: ${{ steps.changes.outputs.changed_examples }}
+      has_example_changes: ${{ steps.changes.outputs.has_example_changes }}
+      has_workflow_changes: ${{ steps.changes.outputs.has_workflow_changes }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Find Changed Examples
+        id: changes
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            BASE=${{ github.event.pull_request.base.sha }}
+          else
+            BASE=${{ github.event.before }}
+          fi
+
+          WORKFLOW_CHANGES=false
+
+          if [ "$BASE" = "0000000000000000000000000000000000000000" ] || [ -z "$BASE" ]; then
+            EXAMPLES=$(find examples -mindepth 1 -maxdepth 1 -type d | sort -u | jq -R -s -c 'split("\n") | map(select(length > 0))')
+          else
+            WORKFLOW_CONFIG=$(git diff --name-only "$BASE" HEAD -- '.github/workflows/examples-validate.yml')
+            EXAMPLES_FROM_EXAMPLES=$(git diff --name-only "$BASE" HEAD -- 'examples/' | awk -F/ 'NF >= 2 {print $1"/"$2}')
+            EXAMPLES_FROM_MODULES=$(git diff --name-only "$BASE" HEAD -- 'modules/' | awk -F/ 'NF >= 3 {print "examples/"$2}')
+
+            if [ -n "$WORKFLOW_CONFIG" ]; then
+              WORKFLOW_CHANGES=true
+            fi
+
+            EXAMPLES=$(printf '%s\n%s\n' "$EXAMPLES_FROM_EXAMPLES" "$EXAMPLES_FROM_MODULES" | sort -u | while read -r dir; do if [ -d "$dir" ]; then printf '%s\n' "$dir"; fi; done | jq -R -s -c 'split("\n") | map(select(length > 0))')
+          fi
+
+          echo "changed_examples=$EXAMPLES" >> "$GITHUB_OUTPUT"
+          echo "has_workflow_changes=$WORKFLOW_CHANGES" >> "$GITHUB_OUTPUT"
+
+          if [ "$EXAMPLES" = "[]" ] || [ "$EXAMPLES" = '[""]' ]; then
+            echo "has_example_changes=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_example_changes=true" >> "$GITHUB_OUTPUT"
+          fi
+
+  example-format:
+    name: Terraform Example Format
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v4
+        with:
+          terraform_version: 1.9.0
+
+      - name: Terraform Example Format Check
+        run: terraform fmt -check -recursive examples
+
+  validate-example-smoke:
+    name: Validate Example Smoke
+    needs: detect-example-changes
+    if: needs.detect-example-changes.outputs.has_workflow_changes == 'true'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v4
+        with:
+          terraform_version: 1.9.0
+
+      - name: Validate Example Smoke
+        run: |
+          cd examples/ai-ml
+          terraform init -backend=false
+          terraform validate
+
+  validate-examples:
+    name: Validate Changed Examples
+    needs: detect-example-changes
+    if: needs.detect-example-changes.outputs.has_example_changes == 'true'
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        dir: ${{ fromJson(needs.detect-example-changes.outputs.changed_examples) }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v4
+        with:
+          terraform_version: 1.9.0
+
+      - name: Validate ${{ matrix.dir }}
+        run: |
+          cd "${{ matrix.dir }}"
+          terraform init -backend=false
+          terraform validate
