@@ -6,11 +6,13 @@ on:
     paths:
       - 'modules/**'
       - '.tflint.hcl'
+      - '.github/workflows/validate.yml'
   pull_request:
     branches: [main]
     paths:
       - 'modules/**'
       - '.tflint.hcl'
+      - '.github/workflows/validate.yml'
   workflow_dispatch:
 
 env:
@@ -111,7 +113,7 @@ jobs:
       - name: Setup TFLint
         uses: terraform-linters/setup-tflint@v6
         with:
-          tflint_version: latest
+          tflint_version: v0.62.1
 
       - name: Init TFLint
         env:
